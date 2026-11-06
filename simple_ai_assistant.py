@@ -4,6 +4,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from tools import TOOLS, FUNCTION_NAME_TO_FUNCTION_MAP
 import os
+from tools import get_stock_price
 
 
 load_dotenv()  #by default looks for .env file
@@ -13,6 +14,7 @@ client = OpenAI(
     base_url=os.getenv("BASE_URL"),  #Send my API requests to the Ollama server running on my computer.
     api_key=os.getenv("API_KEY")  
 )
+
 messages = []
 # messages.append(
 #     {
@@ -71,13 +73,5 @@ while True:
 
     print("Assistant:" + msg.content)  #response from LLM model :qwen:1.7b
 
-    # messages.append(
-    #     {
-    #         "role": "assistant",
-    #         "content": response.choices[0].message.content
-    #     }
-    # )
     
-
-    # print("Assistant:" + response.choices[0].message.content)  #response from LLM model :qwen:1.7b
    
