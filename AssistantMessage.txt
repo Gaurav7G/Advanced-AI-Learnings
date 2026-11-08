@@ -1,0 +1,70 @@
+
+    response = client.chat.completions.create(
+        model=os.getenv("MODEL"),
+        messages=messages,
+        tools=TOOLS,
+    )
+                                         
+    #print("Assistant:(raw): " + str(response) )  -> following is this command's output
+
+     #we are printing this to know what the LLM is reasoning and what is the tool call it is making. 
+
+
+ChatCompletion(
+  id = 'chatcmpl-345',
+  choices = [ Choice(
+    finish_reason = 'tool_calls',
+    index = 0,
+    logprobs = None,
+    message = ChatCompletionMessage(
+      content = '',
+      refusal = None,
+      role = 'assistant',
+      annotations = None,
+      audio = None,
+      function_call = None,
+      tool_calls = [ ChatCompletionMessageFunctionToolCall(
+        id = 'call_nu8uoeyc',
+        function = Function (arguments = '{}', name = 'get_user_city'),
+        type = 'function',
+        index = 0
+      ),
+      ChatCompletionMessageFunctionToolCall(
+        id = 'call_6zju8tjw',
+        function = Function (
+          arguments = '{"city":"Your city name here"}',
+          name = 'get_city_weather'
+        ),
+        type = 'function',
+        index = 1
+      ),
+      ChatCompletionMessageFunctionToolCall(
+        id = 'call_rckjjjn0',
+        function = Function (arguments = '{}', name = 'get_current_time'),
+        type = 'function',
+        index = 2
+      ) ],
+      reasoning = 'Okay, the user is asking for the current time and weather of their city. Let me see which functions I can use here.\n\nFirst, there\'s the get_current_time function, which returns the current date and time. That\'s straightforward. Then there\'s get_city_weather, which requires a city name. The user mentioned "my city," so I should use get_user_city to retrieve their location first. Wait, but the user didn\'t specify a city name, just said "my city." So maybe I need to call get_user_city to find out where they are, and then use that city name to get the weather.\n\nWait, the tools provided have get_user_city, which returns the city where the user lives. So I should call that first. Once I have the city name, I can then use get_city_weather with that city. But the user\'s query is asking for both time and weather. So I need to make two function calls: one for the current time and one for the weather. However, the get_user_city function might return the city, and then I can use that to get the weather. But the user hasn\'t provided a specific city, so maybe I need to assume they\'re referring to their own location. But the functions require a city name for get_city_weather. Hmm.\n\nWait, the get_user_city function\'s description says it returns the city where the user lives. So if the user says "my city," I can call get_user_city to get the city name, then use that city name in get_city_weather. But the user\'s query is asking for both time and weather, so I need to call both functions. However, the get_user_city function might not return a city if the user hasn\'t specified one. But since the user said "my city," I can safely assume they want their own location. So first, call get_user_city to get the city, then use that city to call get_city_weather. Then, call get_current_time. But the tools might require the city name for get_city_weather, so I need to get that first.\n\nSo the steps are: call get_user_city to get the city, then use that city to call get_city_weather, and then call get_current_time. But the user is asking for both time and weather, so perhaps I need to make three function calls. However, the tools might have limitations. Let me check the functions again.\n\nThe get_user_city function returns the city, but if the user hasn\'t provided a specific city, maybe it returns a default. But since the user said "my city," I can proceed. So first, call get_user_city, then use the returned city to call get_city_weather. Then, call get_current_time. However, the functions might not be able to handle multiple calls in one response. But according to the instructions, I can call one or more functions. So I need to make three function calls here: get_user_city, get_city_weather (with the city from get_user_city), and get_current_time.\n\nBut the user\'s query is "tell me time and weather of my city," so maybe the assistant should first get the city, then get the weather, then get the time. So the assistant should first call get_user_city, then use the result to call get_city_weather, and then call get_current_time. Each of these functions would be called in sequence. Therefore, the assistant should make three tool calls.\n'
+    )
+  ) ],
+  created = 1794052085,
+  model = 'qwen3:1.7b',
+  object = 'chat.completion',
+  metadata = None,
+  moderation = None,
+  service_tier = None,
+  system_fingerprint = 'fp_ollama',
+  usage = CompletionUsage(
+    completion_tokens = 762,
+    prompt_tokens = 307,
+    total_tokens = 1069,
+    completion_tokens_details = None,
+    prompt_tokens_details = PromptTokensDetails(
+      audio_tokens = None,
+      cache_write_tokens = None,
+      cached_tokens = 0,
+      image_tokens = None,
+      text_tokens = None
+    )
+  )
+)
